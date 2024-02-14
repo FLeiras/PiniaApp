@@ -26,7 +26,7 @@ const router = createRouter({
       redirect: {name: 'list'},
       children: [
         { path: '/clients', name: 'list', component: ListPage },
-        { path: '/clients/:id', name: 'client', component: ClientPage },
+        { path: '/clients/:id', name: 'client-id', component: ClientPage },
       ]
     },
   ]
