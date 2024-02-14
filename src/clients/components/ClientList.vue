@@ -1,14 +1,23 @@
 <script setup lang="ts">
+import useClients from '@/clients/composables/useClients'
+
+const { clients } = useClients()
+console.log(clients.value);
+
 </script>
 
 <template>
   <ul>
-    <RouterLink :to="{
-      name: 'client-id',
-      params: { id: 1 }
-    }">
-      Client name
-    </RouterLink>
+    <li v-for="client of clients" :key="client?.id">
+      <RouterLink
+        :to="{
+          name: 'client-id',
+          params: { id: client?.id }
+        }"
+      >
+        {{ client.name }}
+      </RouterLink>
+    </li>
   </ul>
 </template>
 
