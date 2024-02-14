@@ -1,5 +1,5 @@
 import clientsApi from '@/api/clients-api'
-import { watch } from 'vue'
+import { /* computed, */ watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useQuery } from '@tanstack/vue-query'
@@ -7,8 +7,13 @@ import { useQuery } from '@tanstack/vue-query'
 import { useClientsStore } from '@/store/clients'
 import type { Client } from '../interfaces/client'
 
-const getClients = async (): Promise<Client[]> => {
-  const { data } = await clientsApi.get<Client[]>('/clients?_page=1')
+const getClients = async ( page: number ): Promise<Client[]> => {
+
+  await new Promise((resolve) => {
+    setTimeout(() => resolve(true), 1500)
+  })
+
+  const { data } = await clientsApi.get<Client[]>(`/clients?_page=${page}`)
 
   return data
 }
@@ -18,8 +23,8 @@ const useClients = () => {
   const { clients, totalPages, currentPage } = storeToRefs(store)
 
   const { isLoading, data } = useQuery({
-    queryKey: ['clients?page=', 1],
-    queryFn: () => getClients()
+    queryKey: ['clients?page=', currentPage ],
+    queryFn: () => getClients( currentPage.value ),
   })
 
   watch(data, (clients) => {
@@ -31,7 +36,17 @@ const useClients = () => {
     isLoading,
     clients,
     totalPages,
-    currentPage
+    currentPage,
+
+    //? Methods
+    getPage(page: number){
+      store.setPage(page)
+    },
+
+    //? Getters
+    // totalPagesNumbers: computed(
+    //   () => 
+    // ),
   }
 }
 

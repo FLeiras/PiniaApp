@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import useClients from '@/clients/composables/useClients'
+import type { Client } from '../interfaces/client';
 
-const { clients } = useClients()
-console.log(clients.value);
+
+  interface Props {
+    clients: Client[]
+  }
+
+  const props = defineProps<Props>();
 
 </script>
 
 <template>
   <ul>
-    <li v-for="client of clients" :key="client?.id">
+    <li v-for="client of props.clients" :key="client?.id">
       <RouterLink
         :to="{
           name: 'client-id',
